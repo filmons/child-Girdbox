@@ -9,5 +9,33 @@
              array( 'parent-style' ),
              wp_get_theme()->get('Version')
         );
-     }
-     ?>
+     };
+     add_action( 'customize_register', 'gridbox_child_stuff_to_customizer' );
+    function gridbox_child_stuff_to_customizer( $wp_customize ) { 
+    
+     /* ici j'ajoute la section */
+  $wp_customize->add_section(
+    'gridbox_child_custom_section', /* section id */
+    array(
+      'title'       => 'Réglages de mon thème',
+      'description' => 'Les options ajoutés via mon thème enfant',
+    )
+  );
+
+  $wp_customize->add_setting(
+    'gridbox_child_custom_setting',
+    array(
+      'default'           => '',
+      'sanitize_callback' => 'wp_kses_post', /* ceci dépend du type de données */
+    )
+  );
+  $wp_customize->add_control(
+    'gridbox_child_custom_setting',
+    array(
+      'type'        => 'textarea', /* différents types sont disponible */
+      'section'     => 'gridbox_child_custom_section', // Required, core or custom.
+      'label'       => 'Mon option',
+      'description' => 'Est sa description.',
+    )
+  );
+}
